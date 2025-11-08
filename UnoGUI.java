@@ -10,6 +10,7 @@ public class UnoGUI {
     private JPanel scoreBoardPanel;
     private JLabel currentPlayerLabel;
     private JLabel topCardLabel;
+    private JLabel statusLabel;
     private JTextArea messageArea;
     private JButton drawButton;
     private JButton nextButton;
@@ -41,19 +42,20 @@ public class UnoGUI {
         for (int i = 1; i <= 4; i++){
             scoreBoardPanel.add(new JLabel("Player " + i + ": "));
         }
-        frame.add(scoreboardPanel, BorderLayout.WEST);
+        frame.add(scoreBoardPanel, BorderLayout.WEST);
     
 
         //player deck
         handPanel = new JPanel();
         handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
+        handPanel.setPreferredSize(new Dimension(900, 150));
         frame.add(handPanel, BorderLayout.SOUTH);
 
         //top 
         topCardPanel = new JPanel(new GridBagLayout());
-        topCardPanel.setBorder(BorderFactory.createTitledBorder(“Top Card”));
-        topCardLabel = new JLabel(“Card”, JLabel.CENTER); 
+        topCardPanel.setBorder(BorderFactory.createTitledBorder("Top Card"));
+        topCardLabel = new JLabel("Card", JLabel.CENTER); 
         topCardLabel.setPreferredSize(new Dimension(100, 150));
         topCardPanel.add(ropCardLabel);
         frame.add(topCardPanel, BorderLayout.CENTER);
@@ -99,8 +101,8 @@ public class UnoGUI {
     public JButton getNextButton() {
         return nextButton;
     }
-    public JPanel getScorePanel() {
-        return scorePanel;
+    public JPanel getScoreBoardPanel() {
+        return scoreBoardPanel;
     }
     public JLabel getStatusLabel() {
         return statusLabel;
