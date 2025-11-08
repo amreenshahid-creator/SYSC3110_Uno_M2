@@ -21,7 +21,7 @@ public class UnoGUI {
     frame = new JFrame ("UNO Game");
     frame.setSize (900, 700);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLayout(new BorderLayout(10, 10);
+    frame.setLayout(new BorderLayout(10, 10));
 
     //top panel
     JPanel infoPanel = new JPanel(new GridLayout(2,1));
@@ -35,49 +35,50 @@ public class UnoGUI {
     frame.add(infoPanel, BorderLayout.NORTH);
     
     // Control panel
-    controlPanel = new JPanel(new BorderLayout));
+    controlPanel = new JPanel(new BorderLayout()));
     
     // Button panel
-    JPanel buttonPanel = new JPanel(;
+    JPanel buttonPanel = new JPanel();
     drawButton = new JButton("Draw Card");
     nextButton = new JButton("Next Player");
-    buttonPanel.add (drawButton); buttonPanel.add (nextButton);
+    buttonPanel.add (drawButton); 
+    buttonPanel.add (nextButton);
     controlPanel.add (buttonPanel, BorderLayout.NORTH);
 
     // Message area
-    messageArea = new TextArea (8, 50);
+    messageArea = new JTextArea (8, 50);
     messageArea.setEditable (false); 
     messageArea.setLineWrap(true); 
     messageArea.setWrapStyleWord (true);
 
-    ScrollPane messageScroll = new ScrollPane (messageArea);
+    ScrollPane messageScroll = new JScrollPane (messageArea);
     controlPanel.add(messageScroll, BorderLayout.CENTER);
     frame.add (controlPanel, BorderLayout.SOUTH);
     frame.setVisible (true);
   }
-  public Frame getFrame() { 
+  public JFrame getFrame() { 
      return frame; 
   } 
   public JPanel getHandPanel() { 
     return handPanel; 
   }
-  public Label getTopCardLabel() { 
+  public JLabel getTopCardLabel() { 
     return topCardLabel; 
   }
   public JLabel getCurrentPlayerLabel() { 
     return currentPlayerLabel; 
   }
-  public TextArea getMessageArea() { 
+  public JTextArea getMessageArea() { 
     return messageArea; 
   }
   public JButton getDrawButton() { 
     return draw Button; 
   }
-  public Button getNextButton() { 
+  public JButton getNextButton() { 
     return nextButton; 
   }
   public void showMessage(String message) {
-    JOptionPane.showMessageDialog(frame,message);
+    JOptionPane.showMessageDialog(frame, message);
   }
   public String colourSelectionDialog() {
     String[] colours = {"RED", "YELLOW", "GREEN", "BLUE");
@@ -91,6 +92,7 @@ public class UnoGUI {
     } catch (NumberFormatException e) {
         return -1;
     }
+  }
   public String playerNameDialog(int playerNumber) {
     return JOptionPane.showInputDialog(frame, "Enter name for player " + playerNumber + ":", "Player Setup", JOptionPane.QUESTION_MESSAGE);
   }
