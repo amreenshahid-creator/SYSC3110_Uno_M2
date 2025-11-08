@@ -33,8 +33,66 @@ public class UnoGUI {
     infoPanel.add(topCardPanel);
 
     frame.add(infoPanel, BorderLayout.NORTH);
+    
+    // Control panel
+    controlPanel = new JPanel(new BorderLayout));
+    
+    // Button panel
+    JPanel buttonPanel = new JPanel(;
+    drawButton = new JButton("Draw Card");
+    nextButton = new JButton("Next Player");
+    buttonPanel.add (drawButton); buttonPanel.add (nextButton);
+    controlPanel.add (buttonPanel, BorderLayout.NORTH);
+
+    // Message area
+    messageArea = new TextArea (8, 50);
+    messageArea.setEditable (false); 
+    messageArea.setLineWrap(true); 
+    messageArea.setWrapStyleWord (true);
+
+    ScrollPane messageScroll = new ScrollPane (messageArea);
+    controlPanel.add(messageScroll, BorderLayout.CENTER);
+    frame.add (controlPanel, BorderLayout.SOUTH);
+    frame.setVisible (true);
   }
-    
-    
-  
+  public Frame getFrame() { 
+     return frame; 
+  } 
+  public JPanel getHandPanel() { 
+    return handPanel; 
+  }
+  public Label getTopCardLabel() { 
+    return topCardLabel; 
+  }
+  public JLabel getCurrentPlayerLabel() { 
+    return currentPlayerLabel; 
+  }
+  public TextArea getMessageArea() { 
+    return messageArea; 
+  }
+  public JButton getDrawButton() { 
+    return draw Button; 
+  }
+  public Button getNextButton() { 
+    return nextButton; 
+  }
+  public void showMessage(String message) {
+    JOptionPane.showMessageDialog(frame,message);
+  }
+  public String colourSelectionDialog() {
+    String[] colours = {"RED", "YELLOW", "GREEN", "BLUE");
+    return (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[O]);
+  }
+
+  public int playerCountDialog() {
+    String input = JOptionPane.showInputDialog(frame, "Enter number of players (2-4):", "Player Setup", JOptionPane.QUESTION_MESSAGE);
+    try {
+      return Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+        return -1;
+    }
+  public String playerNameDialog(int playerNumber) {
+    return JOptionPane.showInputDialog(frame, "Enter name for player " + playerNumber + ":", "Player Setup", JOptionPane.QUESTION_MESSAGE);
+  }
+
 }
