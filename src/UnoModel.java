@@ -33,9 +33,9 @@ public class UnoModel {
 
         public String getFileName() {
             if(value == Values.WILD || value == Values.WILD_DRAW_TWO) {
-                return value.toString() + ".png";
+                return "images/" + value.toString() + ".png";
             }
-            return colour.toString() + "_" + value.toString() + ".png";
+            return "images/" + colour.toString() + "_" + value.toString() + ".png";
         }
     }
 

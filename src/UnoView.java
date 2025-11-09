@@ -10,7 +10,8 @@ public class UnoView {
 
     public void update(UnoModel model) {
         frame.getCurrentPlayerLabel().setText("Current Player: " + model.getCurrPlayer().getName());
-        frame.getTopCardLabel().setIcon(new ImageIcon(model.getTopCard().getFileName()));
+        Dimension topCardSize = frame.getTopCardPanel().getSize();
+        frame.getTopCardLabel().setIcon(frame.resizeImage(model.getTopCard().getFileName(), topCardSize.width - 180, topCardSize.height - 250));
 
         updateHandPanel(model);
     }
@@ -26,5 +27,8 @@ public class UnoView {
             hand.add(cardButton);
             hand.add(Box.createRigidArea(new Dimension(10, 0)));
         }
+
+        hand.revalidate();
+        hand.repaint();
     }
 }

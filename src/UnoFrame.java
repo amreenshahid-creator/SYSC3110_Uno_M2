@@ -50,8 +50,10 @@ public class UnoFrame {
         topCardPanel = new JPanel(new GridBagLayout());
         topCardPanel.setBorder(BorderFactory.createTitledBorder("Top Card"));
         topCardPanel.setPreferredSize(new Dimension(200, 200));
-        topCardLabel = new JLabel("Card", JLabel.CENTER); 
-        topCardLabel.setPreferredSize(new Dimension(80, 120));
+        topCardLabel = new JLabel();
+        topCardLabel.setHorizontalAlignment((JLabel.CENTER));
+        topCardLabel.setVerticalAlignment(JLabel.CENTER);
+        //topCardLabel.setPreferredSize(new Dimension(80, 120));
         topCardPanel.add(topCardLabel);
         frame.add(topCardPanel, BorderLayout.CENTER);
 
@@ -105,6 +107,7 @@ public class UnoFrame {
         scoreBoardPanel.revalidate();
         scoreBoardPanel.repaint();
 
+
         //JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
@@ -146,12 +149,18 @@ public class UnoFrame {
     }
 
     public JButton cardButtons(UnoModel.Card card) {
-        JButton cardButton = new JButton(new ImageIcon(card.getFileName()));
+        JButton cardButton = new JButton(resizeImage(card.getFileName(), 150, 250));
         cardButton.setPreferredSize(new Dimension(150, 250));
         cardButton.setMaximumSize(new Dimension(150, 250));
         cardButton.setMinimumSize(new Dimension(150, 250));
 
         return cardButton;
+    }
+
+    public ImageIcon resizeImage(String file, int width, int height) {
+        ImageIcon image = new ImageIcon(file);
+        Image resize = image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resize);
     }
 
     public void addController(UnoController controller) {
