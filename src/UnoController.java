@@ -18,6 +18,7 @@ public class UnoController implements ActionListener {
         }
         model.newRound();
         view.update(model);
+        view.updateHandPanel(model, this);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -25,12 +26,31 @@ public class UnoController implements ActionListener {
         if(e.getActionCommand().equals("Next Player")) {
             model.advance();
             view.update(model);
+            view.updateHandPanel(model, this);
+            return;
         }
 
         if(e.getActionCommand().equals("Draw Card")) {
             model.drawCard();
             model.advance();
             view.update(model);
+            view.updateHandPanel(model, this);
+            return;
+        }
+
+        else {
+            UnoModel.Card card = model.stringToCard(e.getActionCommand());
+            if (model.isPlayable(card)) {
+                model.playCard(card);
+                model.setTopCard(card);
+                model.advance();
+                view.update(model);
+                view.updateHandPanel(model, this);
+
+            }
+            else {
+                view.update(model);
+            }
         }
     }
 

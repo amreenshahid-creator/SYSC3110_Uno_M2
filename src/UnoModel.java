@@ -75,11 +75,15 @@ public class UnoModel {
         return new Card(colour, value);
     }
 
+    public void playCard(Card card) {
+        getCurrPlayer().getPersonalDeck().remove(card);
+        setTopCard(card);
+    }
+
     public void drawCard() {
         Player currPlayer = getCurrPlayer();
         currPlayer.addCard(getRandomCard());
     }
-
 
     public Card drawOne() {
         Card drawnCard = getRandomCard();
@@ -165,7 +169,7 @@ public class UnoModel {
     }
 
     public void advance() {
-        currPlayerIndex++;
+        currPlayerIndex = (currPlayerIndex + 1) % players.size();
     }
 
     public boolean checkWinner(Player winner) {
@@ -191,6 +195,13 @@ public class UnoModel {
         return sameColour || sameValue;
     }
 
+    public Card stringToCard(String card) {
+        String[] split = card.split("_");
+        Colours colour = Colours.valueOf(split[0]);
+        Values value = Values.valueOf(split[1]);
+        return new Card(colour, value);
+    }
+
     public void addPlayer(String playerName) {
         players.add(new Player(playerName));
         finalScores.put(playerName, 0);
@@ -200,14 +211,19 @@ public class UnoModel {
         return players.get(currPlayerIndex);
     }
 
+
+    public Card getTopCard() {
+        return topCard;
+    }
+
+    public void setTopCard(Card card) {
+        topCard = card;
+    }
+
     public void addView(UnoView view) {
         if(!views.contains(view)) {
             views.add(view);
         }
-    }
-
-    public Card getTopCard() {
-        return topCard;
     }
 
     public void removeView(UnoView view){
