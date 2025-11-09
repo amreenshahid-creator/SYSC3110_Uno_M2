@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class UnoModel {
     public enum Colours {RED, YELLOW, GREEN, BLUE};
@@ -9,6 +7,9 @@ public class UnoModel {
     private int currPlayerIndex = 0;
     int direction = 1;
     private Card topCard;
+    private final int SCORE_TO_WIN = 500;
+    private Map<String, Integer> finalScores = new HashMap<>();
+
 
     public static class Card {
         private Colours colour;
@@ -40,6 +41,11 @@ public class UnoModel {
 
     public static class Player {
         private final List<Card> personalDeck = new ArrayList<>();
+        private String name;
+
+        public Player(String name){
+            this.name = name;
+        }
 
         public List<Card> getPersonalDeck() {
             return personalDeck;
@@ -47,6 +53,11 @@ public class UnoModel {
         public void addCard(Card c) {
             personalDeck.add(c);
         }
+
+        public String getName() {
+            return name;
+        }
+
     }
 
     public Card getRandomCard() {
@@ -101,27 +112,76 @@ public class UnoModel {
         return drawnCards;
     }
 
-    public void newRound() {}
+    public void newRound() {
+        for(Player player: players) {
+            player.getPersonalDeck().clear();
+            for(int i = 0; i < 7; i++) {
+                player.addCard(getRandomCard());
+            }
+        }
+        do {
+            topCard = getRandomCard();
+        }while (topCard.getValue() == Values.WILD || topCard.getValue() == Values.WILD_DRAW_TWO);
 
-
-    public int getScore() {
-        return 1;
+        currPlayerIndex = 0;
+        direction = 1;
     }
 
-    public boolean checkWinner() {
+    public int getScore(Player winner) {
+        int score = 0;
+        for(Player player : players) {
+            if (player == winner){
+                continue;
+            }
+            List<Card> deck = player.getPersonalDeck();
+            for (int i = 0; i < deck.size(); i++ ) {
+                Card card = deck.get(i);
+
+                switch(card.getValue()) {
+                    case ZERO -> score += 0;
+                    case ONE -> score +=1;
+                    case TWO -> score += 2;
+                    case THREE -> score += 3;
+                    case FOUR -> score += 4;
+                    case FIVE -> score +=5;
+                    case SIX -> score += 6;
+                    case SEVEN -> score += 7;
+                    case EIGHT -> score +=8;
+                    case NINE -> score += 9;
+                    case DRAW_ONE -> score += 10;
+                    case SKIP, REVERSE -> score += 20;
+                    case WILD_DRAW_TWO -> score += 25;
+                    case  WILD -> score += 50;
+                }
+            }
+        }
+        return score;
+    }
+
+    public void advance() {
+        currPlayerIndex++;
+    }
+
+    public boolean checkWinner(Player winner) {
+        int winnerScore = getScore(winner);
+        finalScores.put(winner.getName(), finalScores.get(winner.getName()) + winnerScore);
+
+        for(Player p: players) {
+            if(finalScores.get(p.getName()) >= SCORE_TO_WIN) {
+                return true;
+            }
+        }
         return false;
     }
 
+    public boolean isPlayable(Card card){
+        boolean sameColour = card.getColour().equals(topCard.getColour());
+        boolean sameValue = card.getValue() == topCard.getValue();
 
-
-    public int getPlayer() {
-        return 1;
-    }
-
-    public void getPersonalDeck() {}
-
-    public boolean isPlayable(){
-        return false;
+        if(card.getValue() == Values.WILD || card.getValue() == Values. WILD_DRAW_TWO) {
+            return true;
+        }
+        return sameColour || sameValue;
     }
 
     public void addView() {}
