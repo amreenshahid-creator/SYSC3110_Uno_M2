@@ -11,7 +11,6 @@ public class UnoGUI {
     private JLabel currentPlayerLabel;
     private JLabel topCardLabel;
     private JLabel statusLabel;
-    private JTextArea messageArea;
     private JButton drawButton;
     private JButton nextButton;
     private java.util.List<String> playerName;
