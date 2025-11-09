@@ -7,8 +7,8 @@ public class UnoModel {
     private int currPlayerIndex = 0;
     int direction = 1;
     private Card topCard;
-    private final int SCORE_TO_WIN = 500;
     private Map<String, Integer> finalScores = new HashMap<>();
+    private List<UnoView> views = new ArrayList<>();
 
 
     public static class Card {
@@ -167,6 +167,7 @@ public class UnoModel {
         finalScores.put(winner.getName(), finalScores.get(winner.getName()) + winnerScore);
 
         for(Player p: players) {
+            int SCORE_TO_WIN = 500;
             if(finalScores.get(p.getName()) >= SCORE_TO_WIN) {
                 return true;
             }
@@ -184,10 +185,24 @@ public class UnoModel {
         return sameColour || sameValue;
     }
 
-    public void addView() {}
+    public void addPlayer(String playerName) {
+        players.add(new Player(playerName));
+        finalScores.put(playerName, 0);
+    }
 
-    public void removeView(){}
+    public void addView(UnoView view) {
+        if(!views.contains(view)) {
+            views.add(view);
+        }
+    }
 
-    public void notifyViews() {}
+    public void removeView(UnoView view){
+        views.remove(view);
+    }
 
+    public void notifyViews() {
+        for(UnoView v: views) {
+            v.update();
+        }
+    }
 }
