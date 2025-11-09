@@ -33,25 +33,17 @@ public class UnoGUI {
         infoPanel.add(currentPlayerLabel);
         statusLabel = new JLabel("Status Message: ", JLabel.CENTER);
         infoPanel.add(statusLabel);
-
         frame.add(infoPanel, BorderLayout.NORTH);
 
         //scoreboard
         scoreBoardPanel = new JPanel();
-        scoreBoardPanel.setLayout(new GridLayout(5, 1, 5, 5));
+        scoreBoardPanel.setLayout(new GridLayout(0, 1, 5, 5));
         scoreBoardPanel.setBorder(BorderFactory.createTitledBorder("Scoreboard"));
         scoreBoardPanel.setPreferredSize(new Dimension(180, 200));
         for (int i = 1; i <= 4; i++){
             scoreBoardPanel.add(new JLabel("Player " + i + ": "));
         }
         frame.add(scoreBoardPanel, BorderLayout.WEST);
-    
-
-        //player deck
-        handPanel = new JPanel();
-        handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
-        handPanel.setPreferredSize(new Dimension(280, 300));
 
         //top 
         topCardPanel = new JPanel(new GridBagLayout());
@@ -61,23 +53,23 @@ public class UnoGUI {
         topCardPanel.add(topCardLabel);
         frame.add(topCardPanel, BorderLayout.CENTER);
 
-        // Control panel
-        controlPanel = new JPanel(new BorderLayout(10, 10));
-        controlPanel.add(handPanel, BorderLayout.NORTH);
+        //player deck
+        handPanel = new JPanel();
+        handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
+        handPanel.setPreferredSize(new Dimension(280, 300));
         
+        //button for draw, next
         JPanel buttonPanel = new JPanel(new FlowLayout());
         drawButton = new JButton("Draw Card");
         nextButton = new JButton("Next Player");
         buttonPanel.add(drawButton);
         buttonPanel.add(nextButton);
+        
+        //control
+        controlPanel = new JPanel(new BorderLayout());
+        controlPanel.add(handPanel, BorderLayout.NORTH);
         controlPanel.add(buttonPanel, BorderLayout.CENTER);
-
-        messageArea = new JTextArea (4, 50);
-        messageArea.setEditable (false);
-        messageArea.setLineWrap(true);
-        messageArea.setWrapStyleWord (true);
-        JScrollPane messageScroll = new JScrollPane(messageArea);
-        controlPanel.add(messageScroll, BorderLayout.CENTER);
         frame.add(controlPanel, BorderLayout.EAST);
         
         frame.setVisible (true);
@@ -98,10 +90,7 @@ public class UnoGUI {
         }
         
         scoreBoardPanel.removeAll();
-        scoreBoardPanel.setLayout(new GridLayout(playerName.size() + 1, 1, 5, 5));
-        JLabel title = new JLabel("Scoreboard", JLabel.CENTER);
-        scoreBoardPanel.add(title);
-
+        scoreBoardPanel.setLayout(new GridLayout(playerName.size() + 1, 5, 5));
         for (int i = 0; i < playerName.size(); i++){
             JLabel scores = new JLabel(playerName.get(i) + ": 0");
             scoreBoardPanel.add(scores);
