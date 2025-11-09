@@ -47,8 +47,9 @@ public class UnoGUI {
         //top 
         topCardPanel = new JPanel(new GridBagLayout());
         topCardPanel.setBorder(BorderFactory.createTitledBorder("Top Card"));
+        topCardPanel.setPreferredSize(new Dimension(200, 200));
         topCardLabel = new JLabel("Card", JLabel.CENTER); 
-        topCardLabel.setPreferredSize(new Dimension(100, 150));
+        topCardLabel.setPreferredSize(new Dimension(80, 120));
         topCardPanel.add(topCardLabel);
         frame.add(topCardPanel, BorderLayout.CENTER);
 
@@ -56,7 +57,7 @@ public class UnoGUI {
         handPanel = new JPanel();
         handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
-        handPanel.setPreferredSize(new Dimension(280, 300));
+        handPanel.setPreferredSize(new Dimension(400, 300));
         
         //button for draw, next
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -66,6 +67,7 @@ public class UnoGUI {
         buttonPanel.add(nextButton);
         
         controlPanel = new JPanel(new BorderLayout());
+        controlPanel.setPreferredSize(new Dimension(400, 300));
         controlPanel.add(handPanel, BorderLayout.NORTH);
         controlPanel.add(buttonPanel, BorderLayout.CENTER);
         frame.add(controlPanel, BorderLayout.EAST);
