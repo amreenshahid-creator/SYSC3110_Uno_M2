@@ -25,7 +25,7 @@ public class UnoGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout(10, 10));
 
-        //top panel
+        //top info panel
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout (2, 1));
         currentPlayerLabel = new JLabel("Current Player: ", JLabel.CENTER);
@@ -59,13 +59,12 @@ public class UnoGUI {
         handPanel.setPreferredSize(new Dimension(280, 300));
         
         //button for draw, next
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         drawButton = new JButton("Draw Card");
         nextButton = new JButton("Next Player");
         buttonPanel.add(drawButton);
         buttonPanel.add(nextButton);
         
-        //control
         controlPanel = new JPanel(new BorderLayout());
         controlPanel.add(handPanel, BorderLayout.NORTH);
         controlPanel.add(buttonPanel, BorderLayout.CENTER);
@@ -89,7 +88,7 @@ public class UnoGUI {
         }
         
         scoreBoardPanel.removeAll();
-        scoreBoardPanel.setLayout(new GridLayout(playerName.size() + 1, 5, 5));
+        scoreBoardPanel.setLayout(new GridLayout(playerName.size(), 5, 5));
         for (int i = 0; i < playerName.size(); i++){
             JLabel scores = new JLabel(playerName.get(i) + ": 0");
             scoreBoardPanel.add(scores);
@@ -113,9 +112,6 @@ public class UnoGUI {
     }
     public JLabel getCurrentPlayerLabel() {
         return currentPlayerLabel;
-    }
-    public JTextArea getMessageArea() {
-        return messageArea;
     }
     public JButton getDrawButton() {
         return drawButton;
