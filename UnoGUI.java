@@ -13,6 +13,7 @@ public class UnoGUI {
     private JLabel statusLabel;
     private JButton drawButton;
     private JButton nextButton;
+    private JScrollPane deckScrollPane;
     private java.util.List<String> playerName;
 
 
@@ -68,7 +69,11 @@ public class UnoGUI {
         
         controlPanel = new JPanel(new BorderLayout());
         controlPanel.setPreferredSize(new Dimension(400, 300));
-        controlPanel.add(handPanel, BorderLayout.NORTH);
+        deckScrollPane = new JScrollPane(handPanel);
+        deckScrollPane.setPreferredSize(new Dimension(400, 300));
+        deckScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        deckScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        controlPanel.add(deckScrollPane, BorderLayout.NORTH);
         controlPanel.add(buttonPanel, BorderLayout.CENTER);
         frame.add(controlPanel, BorderLayout.EAST);
         
@@ -80,7 +85,7 @@ public class UnoGUI {
             System.exit(0);
         }
         int count = Integer.parseInt(playerCount);
-        ArrayList<String> playerName = new ArrayList<>();
+        playerName = new ArrayList<>();
         for (int i = 1; i <= count; i++){
             String name = JOptionPane.showInputDialog(frame, "Enter name for Player "+ i + ":", "Player Setup", JOptionPane.QUESTION_MESSAGE);
             if (name == null || name.trim().isEmpty()){
@@ -90,7 +95,7 @@ public class UnoGUI {
         }
         
         scoreBoardPanel.removeAll();
-        scoreBoardPanel.setLayout(new GridLayout(playerName.size(), 5, 5));
+        scoreBoardPanel.setLayout(new GridLayout(playerName.size(), 1, 5, 5));
         for (int i = 0; i < playerName.size(); i++){
             JLabel scores = new JLabel(playerName.get(i) + ": 0");
             scoreBoardPanel.add(scores);
