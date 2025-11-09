@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
-public class UnoGUI {
+public class UnoFrame {
     private JFrame frame;
     private JPanel topCardPanel;
     private JPanel handPanel;
@@ -18,7 +18,7 @@ public class UnoGUI {
     private java.util.List<String> playerName;
 
 
-    public UnoGUI () {
+    public UnoFrame () {
         initializeGUI();
     }
     private void initializeGUI() {
@@ -57,18 +57,18 @@ public class UnoGUI {
 
         //player deck
         handPanel = new JPanel();
-        handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        handPanel.setLayout(new BoxLayout(handPanel, BoxLayout.X_AXIS));
         handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
-        handPanel.setPreferredSize(new Dimension(400, 300));
+        //handPanel.setPreferredSize(new Dimension(400, 300));
+        handPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 260));
 
-        
+
         //button for draw, next
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         drawButton = new JButton("Draw Card");
         nextButton = new JButton("Next Player");
         buttonPanel.add(drawButton);
         buttonPanel.add(nextButton);
-        
         controlPanel = new JPanel(new BorderLayout());
         controlPanel.setPreferredSize(new Dimension(400, 300));
         deckScrollPane = new JScrollPane(handPanel);
@@ -105,8 +105,7 @@ public class UnoGUI {
         scoreBoardPanel.revalidate();
         scoreBoardPanel.repaint();
 
-
-        JOptionPane.showMessageDialog(frame, "Game Start");
+        //JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
     
@@ -142,26 +141,33 @@ public class UnoGUI {
         return (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
     }
 
-    public void updateHandPanel(UnoModel.Player currPlayer, ActionListener cardListener) {
-        handPanel.removeAll();
-
-        for(UnoModel.Card c: currPlayer.getPersonalDeck()) {
-            JButton cardButton = new JButton(new ImageIcon(c.getFileName()));
-            cardButton.addActionListener(cardListener);
-            handPanel.add(cardButton);
-        }
+    public List<String> getPlayerName() {
+        return playerName;
     }
 
-    public void drawListener(ActionListener drawListener) {
-        drawButton.addActionListener(drawListener);
+    public JButton cardButtons(UnoModel.Card card) {
+        JButton cardButton = new JButton(new ImageIcon(card.getFileName()));
+        cardButton.setPreferredSize(new Dimension(150, 250));
+        cardButton.setMaximumSize(new Dimension(150, 250));
+        cardButton.setMinimumSize(new Dimension(150, 250));
+
+        return cardButton;
     }
 
-    public void nextListener(ActionListener nextListener) {
-        nextButton.addActionListener(nextListener);
+    public void addController(UnoController controller) {
+        nextButton.addActionListener(controller);
+        nextButton.setActionCommand("Next Player");
+        drawButton.addActionListener(controller);
+        drawButton.setActionCommand("Draw Card");
     }
 
     public static void main(String[] args) {
-        UnoGUI frame = new UnoGUI();
+        UnoFrame frame = new UnoFrame();
+        UnoModel model = new UnoModel();
+        UnoView view = new UnoView(frame);
+        UnoController controller = new UnoController(model, view, frame);
 
+        frame.addController(controller);
+        controller.play();
     }
 }

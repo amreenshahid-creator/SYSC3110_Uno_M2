@@ -75,6 +75,12 @@ public class UnoModel {
         return new Card(colour, value);
     }
 
+    public void drawCard() {
+        Player currPlayer = getCurrPlayer();
+        currPlayer.addCard(getRandomCard());
+    }
+
+
     public Card drawOne() {
         Card drawnCard = getRandomCard();
         int nextPlayerIndex = (currPlayerIndex + 1) % players.size();
@@ -190,10 +196,18 @@ public class UnoModel {
         finalScores.put(playerName, 0);
     }
 
+    public Player getCurrPlayer() {
+        return players.get(currPlayerIndex);
+    }
+
     public void addView(UnoView view) {
         if(!views.contains(view)) {
             views.add(view);
         }
+    }
+
+    public Card getTopCard() {
+        return topCard;
     }
 
     public void removeView(UnoView view){
@@ -202,7 +216,7 @@ public class UnoModel {
 
     public void notifyViews() {
         for(UnoView v: views) {
-            v.update();
+            v.update(this);
         }
     }
 }
