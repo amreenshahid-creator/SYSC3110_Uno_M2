@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 public class UnoGUI {
@@ -59,6 +60,7 @@ public class UnoGUI {
         handPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
         handPanel.setPreferredSize(new Dimension(400, 300));
+
         
         //button for draw, next
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -102,8 +104,8 @@ public class UnoGUI {
         }
         scoreBoardPanel.revalidate();
         scoreBoardPanel.repaint();
-        
-    
+
+
         JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
@@ -138,11 +140,28 @@ public class UnoGUI {
     public String colourSelectionDialog() {
         String[] colours = {"RED", "YELLOW", "GREEN", "BLUE"};
         return (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
-  }
+    }
+
+    public void updateHandPanel(UnoModel.Player currPlayer, ActionListener cardListener) {
+        handPanel.removeAll();
+
+        for(UnoModel.Card c: currPlayer.getPersonalDeck()) {
+            JButton cardButton = new JButton(new ImageIcon(c.getFileName()));
+            cardButton.addActionListener(cardListener);
+            handPanel.add(cardButton);
+        }
+    }
+
+    public void drawListener(ActionListener drawListener) {
+        drawButton.addActionListener(drawListener);
+    }
+
+    public void nextListener(ActionListener nextListener) {
+        nextButton.addActionListener(nextListener);
+    }
 
     public static void main(String[] args) {
         UnoGUI frame = new UnoGUI();
+
     }
 }
-
-
