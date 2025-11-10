@@ -2,8 +2,8 @@
 
 Marc Aoun
 
-For the past milestone, Marc implemented the core game flow, including player initialization for 2–4 players, displaying each player’s hand, validating card placement, and handling pass-turn functionality with drawing cards. Marc also displayed the resultant game state after each turn, including the discard pile and upcoming player information.
-For the current milestone, Marc prepared the README, added JavaDocs and comments, handled data consistency between the model and view, added error handling, wrote the JUnit tests, and completed the UML class diagram and the sequence diagrams.
+For the past milestone, Marc implemented the core game flow, including player initialization for 2–4 players, displaying each player’s hand, validating card placement, and handling pass-turn functionality with drawing cards.
+For the current milestone, Marc prepared the README, added JavaDocs, comments and completed the UML class diagram and the sequence diagrams.
 
 Iman Elabd
 
