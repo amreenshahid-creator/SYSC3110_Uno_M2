@@ -194,6 +194,28 @@ public class UnoFrame {
         drawButton.setActionCommand("Draw Card");
     }
 
+    public void enableCards() {
+        drawButton.setEnabled(true);
+        nextButton.setEnabled(false); //player can only press once they play or draw a card
+
+        for(Component comp: handPanel.getComponents()) { //goes through all the buttons in hand panel
+            if(comp instanceof JButton) {
+                comp.setEnabled(true);
+            }
+        }
+    }
+
+    public void disableCards() {
+        drawButton.setEnabled(false);
+        nextButton.setEnabled(true);
+
+        for(Component comp: handPanel.getComponents()) {
+            if(comp instanceof JButton) {
+                comp.setEnabled(false);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         UnoFrame frame = new UnoFrame();
         UnoModel model = new UnoModel();

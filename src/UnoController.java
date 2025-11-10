@@ -1,16 +1,18 @@
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UnoController implements ActionListener {
-    private UnoModel model;
-    private UnoView view;
-    private UnoFrame frame;
+    private final UnoModel model;
+    private final UnoView view;
+    private final UnoFrame frame;
+    private boolean isAdvanced;
 
     public UnoController(UnoModel model, UnoView view, UnoFrame frame) {
         this.model = model;
         this.view = view;
         this.frame = frame;
+
+        isAdvanced = false;
     }
 
     public void play() {
@@ -20,22 +22,26 @@ public class UnoController implements ActionListener {
         model.newRound();
         view.update(model);
         view.updateHandPanel(model, this);
+        frame.enableCards();
     }
 
     public void actionPerformed(ActionEvent e) {
 
         if(e.getActionCommand().equals("Next Player")) {
-            model.advance();
+            if(!isAdvanced) {
+                model.advance();
+            }
             view.update(model);
             view.updateHandPanel(model, this);
-            return;
+            frame.enableCards();
         }
 
         if(e.getActionCommand().equals("Draw Card")) {
+            frame.getNextButton().setEnabled(true);
             model.drawCard();
-            model.advance();
             view.update(model);
             view.updateHandPanel(model, this);
+            frame.disableCards();
         }
 
         else {
@@ -58,22 +64,27 @@ public class UnoController implements ActionListener {
 
                 if(cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
                     model.drawOne();
-                    model.advance();
+                    //model.advance();
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
                     model.reverse();
-                    model.advance();
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
                     model.skip();
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = true;
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.WILD)) {
@@ -81,9 +92,10 @@ public class UnoController implements ActionListener {
                     if(colour != null) {
                         model.wild(UnoModel.Colours.valueOf(colour));
                     }
-                    model.advance();
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
@@ -94,26 +106,20 @@ public class UnoController implements ActionListener {
 
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = true;
                 }
 
                 else {
-                    model.advance();
                     view.update(model);
                     view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
                 }
             }
             else {
                 view.update(model);
             }
         }
-    }
-
-    public void disableButtons() {
-
-    }
-
-
-    public void enableButtons() {
-
     }
 }
