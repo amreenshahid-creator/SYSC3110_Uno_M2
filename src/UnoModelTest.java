@@ -211,9 +211,5 @@ public class UnoModelTest{
     UnoModel.Card chosen = new UnoModel.Card(UnoModel.Colours.BLUE, UnoModel.Values.THREE);
     model.setTopCard(chosen);
     assertEquals(chosen, model.getTopCard());
-  }
- 
-
-
-  
+  }  
 }
