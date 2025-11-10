@@ -196,12 +196,13 @@ public class UnoModel {
     }
 
     public boolean isPlayable(Card card){
-        boolean sameColour = card.getColour().equals(topCard.getColour());
-        boolean sameValue = card.getValue() == topCard.getValue();
-
-        if(card.getValue() == Values.WILD || card.getValue() == Values. WILD_DRAW_TWO) {
+        if(card.getValue() == Values.WILD || card.getValue() == Values. WILD_DRAW_TWO) { //wild cards can always be played
             return true;
         }
+
+        boolean sameColour = topCard.getColour() != null && card.getColour() != null && card.getColour().equals(topCard.getColour());
+        boolean sameValue = card.getValue() == topCard.getValue();
+
         return sameColour || sameValue;
     }
 

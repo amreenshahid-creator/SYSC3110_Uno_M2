@@ -111,7 +111,6 @@ public class UnoFrame {
         //JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
-    
     public JFrame getFrame() {
         return frame;
     }
@@ -139,9 +138,12 @@ public class UnoFrame {
     public JPanel getTopCardPanel() {
         return topCardPanel;
     }
+
+
     public String colourSelectionDialog() {
         String[] colours = {"RED", "YELLOW", "GREEN", "BLUE"};
-        return (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
+        String colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
+        return colourSelected;
     }
 
     public List<String> getPlayerName() {
@@ -154,7 +156,29 @@ public class UnoFrame {
         cardButton.setMaximumSize(new Dimension(150, 250));
         cardButton.setMinimumSize(new Dimension(150, 250));
 
+        //cardButton.putClientProperty("card", card);
+
+        if(card.getValue().equals(UnoModel.Values.WILD) || card.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
+            cardButton.setActionCommand(card.getValue() + "_" + System.identityHashCode(card));
+        }
+        else {
+            cardButton.setActionCommand(card.getColour() + "_" + card.getValue());
+        }
+
         return cardButton;
+    }
+
+    public void handPanelButtons(List<UnoModel.Card> cards, UnoController controller) {
+       handPanel.removeAll();
+        for(UnoModel.Card c: cards) {
+            JButton cardButton = cardButtons(c);
+            cardButton.addActionListener(controller);
+            //cardButton.setActionCommand(c.getColour() + "_" + c.getValue());
+            handPanel.add(cardButton);
+            handPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        }
+        handPanel.revalidate();
+        handPanel.repaint();
     }
 
     public ImageIcon resizeImage(String file, int width, int height) {

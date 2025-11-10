@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,8 +40,13 @@ public class UnoController implements ActionListener {
 
         else {
             UnoModel.Card cardPicked = null;
-            for(UnoModel.Card card: model.getCurrPlayer().getPersonalDeck()) {           //Find the card that was picked
-                if((card.getColour() + "_" + card.getValue()).equals(e.getActionCommand())) {
+            String cmd;
+            for(UnoModel.Card card: model.getCurrPlayer().getPersonalDeck()) { //Find the card that was picked
+                if(card.getValue().equals(UnoModel.Values.WILD) || card.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)){
+                    cmd = card.getValue() + "_" + System.identityHashCode(card);
+                } else { cmd = card.getColour() + "_" + card.getValue();
+
+                } if(cmd.equals(e.getActionCommand())) {
                     cardPicked = card;
                     break;
                 }
@@ -70,6 +76,15 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                 }
 
+                else if(cardPicked.getValue().equals(UnoModel.Values.WILD)) {
+                    String colour = frame.colourSelectionDialog();
+                    if(colour != null) {
+                        model.wild(UnoModel.Colours.valueOf(colour));
+                    }
+                    model.advance();
+                    view.update(model);
+                    view.updateHandPanel(model, this);
+                }
 
                 else {
                     model.advance();
