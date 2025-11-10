@@ -87,7 +87,7 @@ public class UnoModel {
 
     public void playCard(Card card) {
         getCurrPlayer().getPersonalDeck().remove(card);
-        setTopCard(card);
+        topCard = card;
     }
 
     public void drawCard() {
@@ -128,6 +128,8 @@ public class UnoModel {
         List<Card> drawnCards = new ArrayList<>();
         drawnCards.add(drawnCard1);
         drawnCards.add(drawnCard2);
+
+        skip();
 
         return drawnCards;
     }

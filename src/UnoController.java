@@ -86,6 +86,16 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                 }
 
+                else if(cardPicked.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
+                    String colour = frame.colourSelectionDialog();
+                    if(colour != null) {
+                        model.wildDrawTwo(UnoModel.Colours.valueOf(colour));
+                    }
+
+                    view.update(model);
+                    view.updateHandPanel(model, this);
+                }
+
                 else {
                     model.advance();
                     view.update(model);
