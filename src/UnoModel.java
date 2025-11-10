@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class UnoModel {
-    public enum Colours {RED, YELLOW, GREEN, BLUE};
-    public enum Values {ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, DRAW_ONE, REVERSE, SKIP, WILD, WILD_DRAW_TWO};
+    public enum Colours {RED, YELLOW, GREEN, BLUE}
+    public enum Values {ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, DRAW_ONE, REVERSE, SKIP, WILD, WILD_DRAW_TWO}
     private List<Player> players = new ArrayList<>();
     private int currPlayerIndex = 0;
     int direction = 1;
@@ -26,9 +26,6 @@ public class UnoModel {
         }
         public void setColour(Colours colour) {
             this.colour = colour;
-        }
-        public void setValue(Values value) {
-            this.value = value;
         }
 
         public String getFileName() {
@@ -88,11 +85,13 @@ public class UnoModel {
     public void playCard(Card card) {
         getCurrPlayer().getPersonalDeck().remove(card);
         topCard = card;
+        notifyViews();
     }
 
     public void drawCard() {
         Player currPlayer = getCurrPlayer();
         currPlayer.addCard(getRandomCard());
+        notifyViews();
     }
 
     public Card drawOne() {
@@ -100,19 +99,23 @@ public class UnoModel {
         int nextPlayerIndex = (currPlayerIndex + 1) % players.size();
         Player nextPlayer = players.get(nextPlayerIndex);
         nextPlayer.addCard(drawnCard);
+        notifyViews();
         return drawnCard;
     }
 
     public void reverse() {
         direction = -direction;
+        notifyViews();
     }
 
     public void skip() {
         currPlayerIndex = (currPlayerIndex + 2 * direction + players.size()) % players.size();
+        notifyViews();
     }
 
     public void wild(Colours newColour) {
         topCard.setColour(newColour);
+        notifyViews();
     }
 
     public List<Card> wildDrawTwo(Colours newColour) {
@@ -123,6 +126,7 @@ public class UnoModel {
         Player nextPlayer = players.get(nextPlayerIndex);
         nextPlayer.addCard(drawnCard1);
         nextPlayer.addCard(drawnCard2);
+        notifyViews();
 
         List<Card> drawnCards = new ArrayList<>();
         drawnCards.add(drawnCard1);
@@ -146,6 +150,7 @@ public class UnoModel {
 
         currPlayerIndex = 0;
         direction = 1;
+        notifyViews();
     }
 
     public int getScore(Player winner) {
@@ -181,6 +186,7 @@ public class UnoModel {
 
     public void advance() {
         currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
+        notifyViews();
     }
 
     public boolean checkWinner(Player winner) {
@@ -195,6 +201,7 @@ public class UnoModel {
         }
         return false;
     }
+
 
     public boolean isPlayable(Card card){
         if(card.getValue() == Values.WILD || card.getValue() == Values. WILD_DRAW_TWO) { //wild cards can always be played

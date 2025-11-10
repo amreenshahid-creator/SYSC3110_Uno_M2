@@ -113,21 +113,15 @@ public class UnoFrame {
         //JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-    public JPanel getHandPanel() {
-        return handPanel;
-    }
+    //public JFrame getFrame() { return frame; }
+    //public JPanel getHandPanel() {return handPanel;}
     public JLabel getTopCardLabel() {
         return topCardLabel;
     }
     public JLabel getCurrentPlayerLabel() {
         return currentPlayerLabel;
     }
-    public JButton getDrawButton() {
-        return drawButton;
-    }
+    //public JButton getDrawButton() { return drawButton;}
     public JButton getNextButton() {
         return nextButton;
     }
@@ -148,6 +142,12 @@ public class UnoFrame {
         return colourSelected;
     }
 
+    public String newRoundSelectionDialog() {
+        String[] options = {"New Round", "Quit"};
+        String optionSelected = (String) JOptionPane.showInputDialog(frame, "New Round to Continue playing or Quit", "Round Over", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        return optionSelected;
+    }
+
     public List<String> getPlayerName() {
         return playerName;
     }
@@ -157,8 +157,6 @@ public class UnoFrame {
         cardButton.setPreferredSize(new Dimension(150, 250));
         cardButton.setMaximumSize(new Dimension(150, 250));
         cardButton.setMinimumSize(new Dimension(150, 250));
-
-        //cardButton.putClientProperty("card", card);
 
         if(card.getValue().equals(UnoModel.Values.WILD) || card.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
             cardButton.setActionCommand(card.getValue() + "_" + System.identityHashCode(card));
@@ -175,7 +173,6 @@ public class UnoFrame {
         for(UnoModel.Card c: cards) {
             JButton cardButton = cardButtons(c);
             cardButton.addActionListener(controller);
-            //cardButton.setActionCommand(c.getColour() + "_" + c.getValue());
             handPanel.add(cardButton);
             handPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         }
@@ -234,6 +231,8 @@ public class UnoFrame {
         UnoModel model = new UnoModel();
         UnoView view = new UnoView(frame);
         UnoController controller = new UnoController(model, view, frame);
+
+        model.addView(view);
 
         frame.addController(controller);
         controller.play();

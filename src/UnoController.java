@@ -20,7 +20,7 @@ public class UnoController implements ActionListener {
             model.addPlayer(player);
         }
         model.newRound();
-        view.update(model);
+        //view.update(model);
         view.updateHandPanel(model, this);
         frame.enableCards();
     }
@@ -40,7 +40,8 @@ public class UnoController implements ActionListener {
         if(e.getActionCommand().equals("Draw Card")) {
             frame.getNextButton().setEnabled(true);
             model.drawCard();
-            view.update(model);
+            //view.update(model);
+            isAdvanced = false;
             view.updateHandPanel(model, this);
             frame.disableCards();
             view.updateStatusMessage(model.getCurrPlayer().getName() + " draws a card.");
@@ -62,13 +63,13 @@ public class UnoController implements ActionListener {
             }
 
             if (cardPicked != null && model.isPlayable(cardPicked)) {
+
                 model.playCard(cardPicked);
                 model.setTopCard(cardPicked);
 
                 if(cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
                     model.drawOne();
-                    //model.advance();
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -77,7 +78,7 @@ public class UnoController implements ActionListener {
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
                     model.reverse();
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -87,11 +88,12 @@ public class UnoController implements ActionListener {
                 else if(cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
                     String nextPlayer = model.getNextPlayer().getName();
                     model.skip();
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;
                     view.updateStatusMessage("Skip card has been played, " + nextPlayer + " skips their turn.");
+                    return;
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.WILD)) {
@@ -99,7 +101,7 @@ public class UnoController implements ActionListener {
                     if(colour != null) {
                         model.wild(UnoModel.Colours.valueOf(colour));
                     }
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -113,15 +115,16 @@ public class UnoController implements ActionListener {
                         model.wildDrawTwo(UnoModel.Colours.valueOf(colour));
                     }
 
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;
                     view.updateStatusMessage("New colour chosen, " + colour + ", " + nextPlayer + " draws two cards and skips their turn.");
+                    return;
                 }
 
                 else {
-                    view.update(model);
+                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -131,9 +134,32 @@ public class UnoController implements ActionListener {
                 if(model.isDeckEmpty()) {
                     UnoModel.Player winner = model.getCurrPlayer();
                     int score = model.getScore(winner);
-                    view.updateStatusMessage(winner.getName() +  "is the Winner!");
-                    view.updateWinner(winner.getName(), score);
-                    frame.disableAllButtons();
+
+                    if(model.checkWinner(winner)) {   //if overall winner
+                        view.updateWinner(winner.getName(), score);
+                        view.updateStatusMessage(winner.getName() + " is the Winner of the Game");
+                        frame.disableAllButtons();
+                    }
+
+                    else { // if round winner
+                        view.updateStatusMessage(winner.getName() +  " is the Winner of the Round, with " + score + " points.");
+                        String option = frame.newRoundSelectionDialog();
+                        if(option != null && option.equals("New Round")) {
+                            model.newRound();
+                            view.updateHandPanel(model, this);
+                            frame.enableCards();
+                            view.updateWinner(winner.getName(), score);
+                            return;
+
+                        }
+                        if(option != null && option.equals("Quit")) {
+                            System.exit(0);
+                            view.updateWinner(winner.getName(), score);
+                            return;
+                        }
+
+
+                    }
                 }
             }
             if(cardPicked != null && !model.isPlayable(cardPicked)){
