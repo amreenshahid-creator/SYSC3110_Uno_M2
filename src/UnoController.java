@@ -57,6 +57,14 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                 }
 
+                else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
+                    model.reverse();
+                    model.advance();
+                    view.update(model);
+                    view.updateHandPanel(model, this);
+                }
+
+
                 else {
                     model.advance();
                     view.update(model);

@@ -179,7 +179,7 @@ public class UnoModel {
     }
 
     public void advance() {
-        currPlayerIndex = (currPlayerIndex + 1) % players.size();
+        currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
     }
 
     public boolean checkWinner(Player winner) {
