@@ -34,6 +34,7 @@ public class UnoController implements ActionListener {
             view.update(model);
             view.updateHandPanel(model, this);
             frame.enableCards();
+
         }
 
         if(e.getActionCommand().equals("Draw Card")) {
@@ -42,6 +43,8 @@ public class UnoController implements ActionListener {
             view.update(model);
             view.updateHandPanel(model, this);
             frame.disableCards();
+            view.updateStatusMessage(model.getCurrPlayer().getName() + " draws a card.");
+
         }
 
         else {
@@ -69,6 +72,7 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
+                    view.updateStatusMessage(model.getNextPlayer().getName() + " draws a card");
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
@@ -77,14 +81,17 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
+                    view.updateStatusMessage(model.getCurrPlayer().getName() + " has reversed the order");
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
+                    String nextPlayer = model.getNextPlayer().getName();
                     model.skip();
                     view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;
+                    view.updateStatusMessage("Skip card has been played, " + nextPlayer + " skips their turn.");
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.WILD)) {
@@ -96,10 +103,12 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
+                    view.updateStatusMessage("New colour chosen, " + colour + ".");
                 }
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
                     String colour = frame.colourSelectionDialog();
+                    String nextPlayer = model.getNextPlayer().getName();
                     if(colour != null) {
                         model.wildDrawTwo(UnoModel.Colours.valueOf(colour));
                     }
@@ -108,6 +117,7 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;
+                    view.updateStatusMessage("New colour chosen, " + colour + ", " + nextPlayer + " draws two cards and skips their turn.");
                 }
 
                 else {
@@ -115,10 +125,19 @@ public class UnoController implements ActionListener {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
+                    view.updateStatusMessage(model.getCurrPlayer().getName() + " played a card");
+                }
+
+                if(model.isDeckEmpty()) {
+                    UnoModel.Player winner = model.getCurrPlayer();
+                    int score = model.getScore(winner);
+                    view.updateStatusMessage(winner.getName() +  "is the Winner!");
+                    view.updateWinner(winner.getName(), score);
+                    frame.disableAllButtons();
                 }
             }
-            else {
-                view.update(model);
+            if(cardPicked != null && !model.isPlayable(cardPicked)){
+                view.updateStatusMessage("Placing that card is not a valid move. Try again.");
             }
         }
     }

@@ -31,8 +31,11 @@ public class UnoFrame {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout (2, 1));
         currentPlayerLabel = new JLabel("Current Player: ", JLabel.CENTER);
+        currentPlayerLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         infoPanel.add(currentPlayerLabel);
         statusLabel = new JLabel("Status Message: ", JLabel.CENTER);
+        statusLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        statusLabel.setForeground(Color.red);
         infoPanel.add(statusLabel);
         frame.add(infoPanel, BorderLayout.NORTH);
 
@@ -100,13 +103,12 @@ public class UnoFrame {
         
         scoreBoardPanel.removeAll();
         scoreBoardPanel.setLayout(new GridLayout(playerName.size(), 1, 5, 5));
-        for (int i = 0; i < playerName.size(); i++){
+        for(int i = 0; i < playerName.size(); i++){
             JLabel scores = new JLabel(playerName.get(i) + ": 0");
             scoreBoardPanel.add(scores);
         }
         scoreBoardPanel.revalidate();
         scoreBoardPanel.repaint();
-
 
         //JOptionPane.showMessageDialog(frame, "Game Start");
     }
@@ -208,6 +210,17 @@ public class UnoFrame {
     public void disableCards() {
         drawButton.setEnabled(false);
         nextButton.setEnabled(true);
+
+        for(Component comp: handPanel.getComponents()) {
+            if(comp instanceof JButton) {
+                comp.setEnabled(false);
+            }
+        }
+    }
+
+    public void disableAllButtons() {
+        drawButton.setEnabled(false);
+        nextButton.setEnabled(false);
 
         for(Component comp: handPanel.getComponents()) {
             if(comp instanceof JButton) {

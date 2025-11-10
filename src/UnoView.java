@@ -12,23 +12,26 @@ public class UnoView {
         frame.getCurrentPlayerLabel().setText("Current Player: " + model.getCurrPlayer().getName());
         Dimension topCardSize = frame.getTopCardPanel().getSize();
         frame.getTopCardLabel().setIcon(frame.resizeImage(model.getTopCard().getFileName(), topCardSize.width - 180, topCardSize.height - 250));
-
-        updateHandPanel(model);
     }
 
-    public void updateHandPanel(UnoModel model) {
-        JPanel hand = frame.getHandPanel();
-        hand.removeAll();
+    public void updateHandPanel(UnoModel model, UnoController controller) {
+        frame.handPanelButtons(model.getCurrPlayer().getPersonalDeck(), controller);
+    }
 
-        UnoModel.Player currPlayer = model.getCurrPlayer();
+    public void updateStatusMessage(String msg) {
+        frame.getStatusLabel().setText("Status Message: " + msg);
+    }
 
-        for(UnoModel.Card c: currPlayer.getPersonalDeck()) {
-            JButton cardButton = frame.cardButtons(c);
-            hand.add(cardButton);
-            hand.add(Box.createRigidArea(new Dimension(10, 0)));
+    public void updateWinner(String winner, int score) {
+        JPanel scoreBoardPanel = frame.getScoreBoardPanel();
+
+        Component[] scores = scoreBoardPanel.getComponents();
+        for(Component comp: scores) {
+            if(comp instanceof JLabel label) {
+                if(label.getText().startsWith(winner)) {
+                    label.setText(winner + ": " + score);
+                }
+            }
         }
-
-        hand.revalidate();
-        hand.repaint();
     }
 }

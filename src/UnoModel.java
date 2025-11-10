@@ -51,7 +51,7 @@ public class UnoModel {
 
     public static class Player {
         private final List<Card> personalDeck = new ArrayList<>();
-        private String name;
+        private final String name;
 
         public Player(String name){
             this.name = name;
@@ -108,8 +108,7 @@ public class UnoModel {
     }
 
     public void skip() {
-        currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
-        currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
+        currPlayerIndex = (currPlayerIndex + 2 * direction + players.size()) % players.size();
     }
 
     public void wild(Colours newColour) {
@@ -120,7 +119,7 @@ public class UnoModel {
         topCard.setColour(newColour);
         Card drawnCard1 = getRandomCard();
         Card drawnCard2 = getRandomCard();
-        int nextPlayerIndex = (currPlayerIndex + 1) % players.size();
+        int nextPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
         Player nextPlayer = players.get(nextPlayerIndex);
         nextPlayer.addCard(drawnCard1);
         nextPlayer.addCard(drawnCard2);
@@ -217,6 +216,10 @@ public class UnoModel {
         return players.get(currPlayerIndex);
     }
 
+    public Player getNextPlayer() {
+        return players.get((currPlayerIndex + direction + players.size()) % players.size());
+    }
+
 
     public Card getTopCard() {
         return topCard;
@@ -224,6 +227,10 @@ public class UnoModel {
 
     public void setTopCard(Card card) {
         topCard = card;
+    }
+
+    public boolean isDeckEmpty() {
+        return getCurrPlayer().getPersonalDeck().isEmpty();
     }
 
     public void addView(UnoView view) {
