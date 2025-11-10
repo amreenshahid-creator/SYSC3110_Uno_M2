@@ -16,20 +16,18 @@ public class UnoModelTest{
     model.addPlayer("Mark");
   }
   /**Checks random card generator */
-@Test
-public void testGetRandomCard(){
-    int count = 0;
-    while (count < 20) {
-        UnoModel.Card randomCard = model.getRandomCard();
-        assertNotNull(randomCard);
-        assertNotNull(randomCard.getValue());
-        if (randomCard.getValue() != UnoModel.Values.WILD &&
-            randomCard.getValue() != UnoModel.Values.WILD_DRAW_TWO){
-            assertNotNull(randomCard.getColour());
-        }
-        count++;
+  @Test
+  public void testGetRandomCard(){
+    for (int i = 0; i < 20; i++) {
+      UnoModel.Card card = model.getRandomCard();
+      assertNotNull(card);
+      assertNotNull(card.getValue());
+      if (card.getValue() != UnoModel.Values.WILD &&
+          card.getValue() != UnoModel.Values.WILD_DRAW_TWO) {
+        assertNotNull(card.getColour());
+      }
     }
-}
+  }
   /** New round that deals with 7 cards per player */
   @Test
   public void testNewRoundSevenCards(){
@@ -45,6 +43,7 @@ public void testGetRandomCard(){
     assertTrue(top.getValue() != UnoModel.Values.WILD &&
                top.getValue() != UnoModel.Values.WILD_DRAW_TWO);
   }
+  
   /** drawCard adds one card to current player*/
   @Test
   public void testDrawCardAddsOne(){
@@ -60,16 +59,10 @@ public void testGetRandomCard(){
     model.addPlayer("John");
     model.addPlayer("Mark");
     model.newRound();
-    model.advance();
-    int start = model.getCurrPlayer().getPersonalDeck().size();
-    model = new UnoModel();
-    model.addPlayer("John");
-    model.addPlayer("Mark");
-    model.newRound();
     UnoModel.Card c = model.drawOne();
     assertNotNull(c);
     model.advance();
-    assertEquals(start + 1, model.getCurrPlayer().getPersonalDeck().size());
+    assertEquals(8, model.getCurrPlayer().getPersonalDeck().size());
   }
   /** reverse and skip affect*/
   @Test
@@ -177,4 +170,3 @@ public void testPlayableCard(){
     assertEquals(71, score);
   }
 }
-
