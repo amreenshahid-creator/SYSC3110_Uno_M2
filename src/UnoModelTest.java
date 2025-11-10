@@ -28,6 +28,17 @@ public class UnoModelTest{
       }
     }
   }
+   /** sets a new top on pile by removing played card from player thats currently playing*/
+  @Test
+  public void testPlayCardTop(){
+    model.newRound();
+    UnoModel.Player player = model.getCurrPlayer();
+    UnoModel.Card first = player.getPersonalDeck().get(0);
+    int before = player.getPersonalDeck().size();
+    model.playCard(first);
+    assertEquals(before - 1, player.getPersonalDeck().size());
+    assertEquals(first, model.getTopCard());
+}
   /** New round that deals with 7 cards per player */
   @Test
   public void testNewRoundSevenCards(){
@@ -169,4 +180,17 @@ public void testPlayableCard(){
     int score = model.getScore(winner);
     assertEquals(71, score);
   }
+  
+  /** the test for set top cards*/
+  @Test
+  public void testSetTopCard(){
+    model.newRound();
+    UnoModel.Card chosen = new UnoModel.Card(UnoModel.Colours.BLUE, UnoModel.Values.THREE);
+    model.setTopCard(chosen);
+    assertEquals(chosen, model.getTopCard());
+  }
+ 
+
+
+  
 }
