@@ -95,6 +95,20 @@ public class UnoModelTest{
     model.skip(); //skip
     assertEquals("B", model.getCurrPlayer().getName());
   }
+  /**this test checks who plays after current player */
+  @Test
+  public void testNextPlayer(){
+    model = new UnoModel();
+    model.addPlayer("A");
+    model.addPlayer("B");
+    model.addPlayer("C");
+    model.newRound();
+    assertEquals("B", model.getNextPlayer().getName());
+    model.reverse();
+    assertEquals("C", model.getNextPlayer().getName());
+    model.advance();
+    assertEquals("B", model.getNextPlayer().getName());
+  }
   /** wild sets the top card colour */
   @Test
   public void testWildSetsColour(){
@@ -127,8 +141,8 @@ public class UnoModelTest{
  *This test is for checking if cards are playable based on rules of Uno,
  *It tests if cards same colour, same value, wild cards, and any false case.
  */
-@Test
-public void testPlayableCard(){
+  @Test
+  public void testPlayableCard(){
     model.newRound();
     UnoModel.Card top = model.getTopCard();
     UnoModel.Card sameColour = new UnoModel.Card(top.getColour(), UnoModel.Values.FIVE);
@@ -180,7 +194,16 @@ public void testPlayableCard(){
     int score = model.getScore(winner);
     assertEquals(71, score);
   }
-  
+  /** the test checks if a player has no cards left*/
+  @Test
+  public void testIsDeckEmpty(){
+    model.newRound();
+    assertFalse(model.isDeckEmpty());
+    model.getCurrPlayer().getPersonalDeck().clear();
+    assertTrue(model.isDeckEmpty());
+    model.drawCard();
+    assertFalse(model.isDeckEmpty());
+  }
   /** the test for set top cards*/
   @Test
   public void testSetTopCard(){
