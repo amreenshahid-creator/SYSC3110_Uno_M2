@@ -35,18 +35,33 @@ public class UnoController implements ActionListener {
             model.advance();
             view.update(model);
             view.updateHandPanel(model, this);
-            return;
         }
 
         else {
-            UnoModel.Card card = model.stringToCard(e.getActionCommand());
-            if (model.isPlayable(card)) {
-                model.playCard(card);
-                model.setTopCard(card);
-                model.advance();
-                view.update(model);
-                view.updateHandPanel(model, this);
+            UnoModel.Card cardPicked = null;
+            for(UnoModel.Card card: model.getCurrPlayer().getPersonalDeck()) {           //Find the card that was picked
+                if((card.getColour() + "_" + card.getValue()).equals(e.getActionCommand())) {
+                    cardPicked = card;
+                    break;
+                }
+            }
 
+            if (cardPicked != null && model.isPlayable(cardPicked)) {
+                model.playCard(cardPicked);
+                model.setTopCard(cardPicked);
+
+                if(cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
+                    model.drawOne();
+                    model.advance();
+                    view.update(model);
+                    view.updateHandPanel(model, this);
+                }
+
+                else {
+                    model.advance();
+                    view.update(model);
+                    view.updateHandPanel(model, this);
+                }
             }
             else {
                 view.update(model);

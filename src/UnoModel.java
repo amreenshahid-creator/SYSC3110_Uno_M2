@@ -37,6 +37,16 @@ public class UnoModel {
             }
             return "images/" + colour.toString() + "_" + value.toString() + ".png";
         }
+
+        public boolean equals(Object o) {
+            if(this == o) {
+                return true;
+            }
+            if (!(o instanceof Card other)) {
+                return false;
+            }
+            return this.colour == other.colour && this.value == other.value;
+        }
     }
 
     public static class Player {
@@ -193,13 +203,6 @@ public class UnoModel {
             return true;
         }
         return sameColour || sameValue;
-    }
-
-    public Card stringToCard(String card) {
-        String[] split = card.split("_");
-        Colours colour = Colours.valueOf(split[0]);
-        Values value = Values.valueOf(split[1]);
-        return new Card(colour, value);
     }
 
     public void addPlayer(String playerName) {
