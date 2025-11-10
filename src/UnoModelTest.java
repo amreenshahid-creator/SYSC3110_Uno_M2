@@ -154,7 +154,7 @@ public void testPlayableCard(){
 }
   /** advance function moves to next player */
   @Test
-  public void testWildDrawTwoAddsCards(){
+  public void testAdvanceNextPlayer(){
     model.addPlayer("Max");
     model.newRound();
     String first = model.getCurrPlayer().getName();
