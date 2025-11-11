@@ -3,31 +3,71 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The main GUI window for the UNO game.
+ * <p>
+ * UnoFrame is responsible for creating and managing all visible components,
+ * including player setup dialogs, scoreboard, hand panel, top card display,
+ * and action buttons. It does not contain any game logic; instead, it provides
+ * UI elements that the controller can enable, disable, or update.
+ * </p>
+ */
+
 public class UnoFrame {
+    /** Top-level application window. */
     private JFrame frame;
+
+    /** Panel that displays the current top card. */
     private JPanel topCardPanel;
+
+    /** Panel that displays the player's hand as card buttons. */
     private JPanel handPanel;
+
+    /** Container for the scrollable hand panel and the control buttons. */
     private JPanel controlPanel;
+
+    /** Panel that displays player scores. */
     private JPanel scoreBoardPanel;
+
+    /** Label that shows the current player's name. */
     private JLabel currentPlayerLabel;
+
+    /** Label containing the image of the top card. */
     private JLabel topCardLabel;
+
+    /** Status message area for game feedback. */
     private JLabel statusLabel;
+
+    /** Button to draw a new card. */
     private JButton drawButton;
+
+    /** Button to advance to the next player. */
     private JButton nextButton;
+
+    /** Scrollable wrapper for the hand panel. */
     private JScrollPane deckScrollPane;
+
+    /** List of player names obtained during game setup. */
     private java.util.List<String> playerName;
 
-
+    /**
+     * Constructs the game window and initializes all graphical components.
+     */
     public UnoFrame () {
         initializeGUI();
     }
+
+    /**
+     * Builds all GUI panels, prompts for number of players and names,
+     * sets up the scoreboard, hand panel, top card panel, and buttons.
+     */
     private void initializeGUI() {
         frame = new JFrame ("UNO Game");
         frame.setSize (1000, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout(10, 10));
 
-        //top info panel
+        // ----- Top info panel: Current player + Status message -----
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout (2, 1));
         currentPlayerLabel = new JLabel("Current Player: ", JLabel.CENTER);
@@ -39,7 +79,7 @@ public class UnoFrame {
         infoPanel.add(statusLabel);
         frame.add(infoPanel, BorderLayout.NORTH);
 
-        //scoreboard
+        // ----- Scoreboard Panel -----
         scoreBoardPanel = new JPanel();
         scoreBoardPanel.setLayout(new GridLayout(0, 1, 5, 5));
         scoreBoardPanel.setBorder(BorderFactory.createTitledBorder("Scoreboard"));
@@ -49,7 +89,7 @@ public class UnoFrame {
         }
         frame.add(scoreBoardPanel, BorderLayout.WEST);
 
-        //top 
+        // ----- Top Card Panel -----
         topCardPanel = new JPanel(new GridBagLayout());
         topCardPanel.setBorder(BorderFactory.createTitledBorder("Top Card"));
         topCardPanel.setPreferredSize(new Dimension(200, 200));
@@ -60,7 +100,7 @@ public class UnoFrame {
         topCardPanel.add(topCardLabel);
         frame.add(topCardPanel, BorderLayout.CENTER);
 
-        //player deck
+        // ----- Player Hand Panel -----
         handPanel = new JPanel();
         handPanel.setLayout(new BoxLayout(handPanel, BoxLayout.X_AXIS));
         handPanel.setBorder(BorderFactory.createTitledBorder("Player's Deck"));
@@ -68,29 +108,39 @@ public class UnoFrame {
         handPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 260));
 
 
-        //button for draw, next
+        // ----- Draw + Next Buttons -----
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         drawButton = new JButton("Draw Card");
         nextButton = new JButton("Next Player");
         buttonPanel.add(drawButton);
         buttonPanel.add(nextButton);
+
+        // ----- Right-hand control section -----
         controlPanel = new JPanel(new BorderLayout());
         controlPanel.setPreferredSize(new Dimension(400, 300));
+
         deckScrollPane = new JScrollPane(handPanel);
         deckScrollPane.setPreferredSize(new Dimension(400, 300));
         deckScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         deckScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         controlPanel.add(deckScrollPane, BorderLayout.NORTH);
         controlPanel.add(buttonPanel, BorderLayout.CENTER);
+
         frame.add(controlPanel, BorderLayout.EAST);
         
         frame.setVisible (true);
-        
+
+        // ----- Prompt Player Count -----
         String[] playerOptions = {"2", "3", "4"};
         String playerCount = (String) JOptionPane.showInputDialog(frame, "Select Number of Players:", "Player Setup", JOptionPane.QUESTION_MESSAGE, null, playerOptions, playerOptions[0]);
+
+        // If canceled, exit
         if (playerCount == null){
             System.exit(0);
         }
+
+        // ----- Prompt Player Names -----
         int count = Integer.parseInt(playerCount);
         playerName = new ArrayList<>();
         for (int i = 1; i <= count; i++){
@@ -100,7 +150,8 @@ public class UnoFrame {
             }
         playerName.add(name);
         }
-        
+
+        // ----- Setup Scoreboard for Actual Player Count -----
         scoreBoardPanel.removeAll();
         scoreBoardPanel.setLayout(new GridLayout(playerName.size(), 1, 5, 5));
         for(int i = 0; i < playerName.size(); i++){
@@ -110,48 +161,69 @@ public class UnoFrame {
         scoreBoardPanel.revalidate();
         scoreBoardPanel.repaint();
 
-        //JOptionPane.showMessageDialog(frame, "Game Start");
     }
 
-    //public JFrame getFrame() { return frame; }
-    //public JPanel getHandPanel() {return handPanel;}
+    /** @return the label that shows the top card image. */
     public JLabel getTopCardLabel() {
         return topCardLabel;
     }
+
+    /** @return the label indicating the current player's name. */
     public JLabel getCurrentPlayerLabel() {
         return currentPlayerLabel;
     }
-    //public JButton getDrawButton() { return drawButton;}
+
+    /** @return the button used to advance to the next player. */
     public JButton getNextButton() {
         return nextButton;
     }
+
+    /** @return the scoreboard panel. */
     public JPanel getScoreBoardPanel() {
         return scoreBoardPanel;
     }
+
+    /** @return the status message label. */
     public JLabel getStatusLabel() {
         return statusLabel;
     }
+
+    /** @return the panel holding the top card. */
     public JPanel getTopCardPanel() {
         return topCardPanel;
     }
 
-
+    /**
+     * Opens a dialog to let the user choose the new colour for a WILD card.
+     * @return the chosen colour (RED, YELLOW, GREEN, BLUE) or null if cancelled
+     */
     public String colourSelectionDialog() {
         String[] colours = {"RED", "YELLOW", "GREEN", "BLUE"};
         String colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
         return colourSelected;
     }
 
+    /**
+     * Opens a dialog to let the user choose an option once round is over
+     * @return the chosen option (New Round, Quit) or null if cancelled
+     */
     public String newRoundSelectionDialog() {
         String[] options = {"New Round", "Quit"};
         String optionSelected = (String) JOptionPane.showInputDialog(frame, "New Round to Continue playing or Quit", "Round Over", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
         return optionSelected;
     }
 
+
+    /** @return list of player names entered during setup. */
     public List<String> getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Creates a JButton representation of a card with scaling and action command.
+     * @param card the model card
+     * @return a button containing the card image and correct action command
+     */
     public JButton cardButtons(UnoModel.Card card) {
         JButton cardButton = new JButton(resizeImage(card.getFileName(), 150, 250));
         cardButton.setPreferredSize(new Dimension(150, 250));
@@ -168,6 +240,11 @@ public class UnoFrame {
         return cardButton;
     }
 
+    /**
+     * Rebuilds the hand panel with card buttons for the current player.
+     * @param cards list of cards to display
+     * @param controller the action listener for card clicks
+     */
     public void handPanelButtons(List<UnoModel.Card> cards, UnoController controller) {
        handPanel.removeAll();
         for(UnoModel.Card c: cards) {
@@ -180,12 +257,23 @@ public class UnoFrame {
         handPanel.repaint();
     }
 
+    /**
+     * Scales an image file to create a consistent card display.
+     * @param file filename/path of the image
+     * @param width target width
+     * @param height target height
+     * @return ImageIcon resized to the given dimensions
+     */
     public ImageIcon resizeImage(String file, int width, int height) {
         ImageIcon image = new ImageIcon(file);
         Image resize = image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resize);
     }
 
+    /**
+     * Adds the controller's ActionListeners to the Draw and Next buttons.
+     * @param controller UnoController instance
+     */
     public void addController(UnoController controller) {
         nextButton.addActionListener(controller);
         nextButton.setActionCommand("Next Player");
@@ -193,6 +281,10 @@ public class UnoFrame {
         drawButton.setActionCommand("Draw Card");
     }
 
+    /**
+     * Enables all card buttons and the Draw button.
+     * Disables Next until the player performs an action.
+     */
     public void enableCards() {
         drawButton.setEnabled(true);
         nextButton.setEnabled(false); //player can only press once they play or draw a card
@@ -204,6 +296,9 @@ public class UnoFrame {
         }
     }
 
+    /**
+     * Disables card buttons after the player acts and enables Next Player.
+     */
     public void disableCards() {
         drawButton.setEnabled(false);
         nextButton.setEnabled(true);
@@ -215,6 +310,9 @@ public class UnoFrame {
         }
     }
 
+    /**
+     * Disables all interactable buttons (used when the game ends).
+     */
     public void disableAllButtons() {
         drawButton.setEnabled(false);
         nextButton.setEnabled(false);
@@ -226,6 +324,9 @@ public class UnoFrame {
         }
     }
 
+    /**
+     * Main method to launch the standalone UNO game window.
+     */
     public static void main(String[] args) {
         UnoFrame frame = new UnoFrame();
         UnoModel model = new UnoModel();
