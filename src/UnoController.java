@@ -72,7 +72,7 @@ public class UnoController implements ActionListener {
             if(!isAdvanced) {
                 model.advance();                         // Only advance if no card effect already advanced the turn
             }
-            view.update(model);
+            //view.update(model);
             view.updateHandPanel(model, this);
             frame.enableCards();
 
@@ -82,7 +82,6 @@ public class UnoController implements ActionListener {
         if(e.getActionCommand().equals("Draw Card")) {
             frame.getNextButton().setEnabled(true);
             model.drawCard();                              // Draw card into player's hand
-            //view.update(model);
             isAdvanced = false;
             view.updateHandPanel(model, this);
             frame.disableCards();                          // Disable cards until next turn
@@ -115,7 +114,6 @@ public class UnoController implements ActionListener {
 
                 if(cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
                     model.drawOne();                         // Next player draws one
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -124,7 +122,6 @@ public class UnoController implements ActionListener {
 
                 else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
                     model.reverse();                           // Reverse turn order
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -134,7 +131,6 @@ public class UnoController implements ActionListener {
                 else if(cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
                     String nextPlayer = model.getNextPlayer().getName();
                     model.skip();                               // Skip next player's turn
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;                           // Skip already advances turn logic
@@ -147,7 +143,6 @@ public class UnoController implements ActionListener {
                     if(colour != null) {
                         model.wild(UnoModel.Colours.valueOf(colour));
                     }
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
@@ -161,7 +156,6 @@ public class UnoController implements ActionListener {
                         model.wildDrawTwo(UnoModel.Colours.valueOf(colour));    // Next player draws 2 + skip
                     }
 
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = true;                                          // Turn skip already applied
@@ -171,7 +165,6 @@ public class UnoController implements ActionListener {
 
                 // Regular card played
                 else {
-                    //view.update(model);
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
